@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, HttpCode } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, HttpCode, ParseIntPipe, Query, ParseBoolPipe } from '@nestjs/common';
 
 @Controller('property')
 export class PropertyController {
@@ -7,9 +7,11 @@ export class PropertyController {
         return 'All properties';
     }
 
-    @Get(':id/:slug')
-    getPropertyById(@Param('id') id: string, @Param('slug') slug: string) {
-        return `Property with ID: ${id} and slug: ${slug}`;
+    @Get(':id')
+    getPropertyById(@Param('id', ParseIntPipe) id: number, @Query('sort', ParseBoolPipe) sort: boolean) {
+        console.log(typeof id);
+        console.log(typeof sort);
+        return `Property with ID: ${id}`;
     }
 
     @Post()
