@@ -1,17 +1,24 @@
-import { IsString, IsNumber, IsOptional, Length, IsPositive, IsInt } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  Length,
+  IsPositive,
+  IsInt,
+} from 'class-validator';
 
 export class CreatePropertyDto {
-  @IsString({always: true})
+  @IsString()
   @Length(1, 10, { message: 'Make sure the name is 10 characters or less' })
   readonly name: string;
 
-  @IsInt({always: true})
+  @IsInt()
   @IsPositive()
   readonly area: number;
 
   @IsOptional()
   @IsString()
-  @Length(0, 5, { groups: ['create'] })
-  @Length(10, 50, { groups: ['update'] })
+  @Length(2, 10, { groups: ['create'] })
+  @Length(1, 15, { groups: ['update'] })
   readonly description?: string;
 }
