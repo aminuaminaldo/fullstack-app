@@ -36,12 +36,12 @@ export class PropertyController {
   // @HttpCode(202)
   createProperty(
     @Body(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        groups: ['create'],
-        always: true,
-      }),
+    //   new ValidationPipe({
+    //     whitelist: true,
+    //     forbidNonWhitelisted: true,
+    //     groups: ['create'],
+    //     always: true,
+    //   }),
     )
     propertyData: CreatePropertyDto,
   ) {
@@ -52,12 +52,12 @@ export class PropertyController {
   updateProperty(
     @Param('id', ParseIntPipe) id: number,
     @Body(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        groups: ['update'],
-        always: true,
-      }),
+    //   new ValidationPipe({
+    //     whitelist: true,
+    //     forbidNonWhitelisted: true,
+    //     groups: ['update'],
+    //     always: true,
+    //   }),
     )
     propertyData: CreatePropertyDto,
   ) {
