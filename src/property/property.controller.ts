@@ -15,6 +15,11 @@ import {
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { IdParamDto } from './dto/idParam.dto';
 import { ParseIdPipe } from './pipes/parseIdpipe';
+import { ZodValidationPipe } from './pipes/zodValidationpipe';
+import {
+  CreatePropertySchema,
+  CreatePropertyZodDto,
+} from './dto/createPropertyZod.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -36,14 +41,16 @@ export class PropertyController {
   @Post()
   // @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   // @HttpCode(202)
+  @UsePipes(new ZodValidationPipe(CreatePropertySchema))
   createProperty(
-    @Body() //   new ValidationPipe({
+    @Body() propertyData: CreatePropertyZodDto,
+    // @Body() propertyData: CreatePropertyDto,
+    //   new ValidationPipe({
+    //     forbidNonWhitelisted: true,
     //     whitelist: true,
-    propertyData //     forbidNonWhitelisted: true,
     //     groups: ['create'],
     //     always: true,
     //   }),
-    : CreatePropertyDto,
   ) {
     return `Property created with data: ${JSON.stringify(propertyData)}`;
   }
@@ -54,8 +61,8 @@ export class PropertyController {
     // @Param() param: IdParamDto,
     @Param('id', ParseIdPipe) id,
     @Body() //   new ValidationPipe({
-    //     whitelist: true,
-    propertyData //     forbidNonWhitelisted: true,
+    //     forbidNonWhitelisted: true,
+    propertyData //     whitelist: true,
     //     groups: ['update'],
     //     always: true,
     //   }),
