@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { IdParamDto } from './dto/idParam.dto';
+import { ParseIdPipe } from './pipes/parseIdpipe';
 
 @Controller('property')
 export class PropertyController {
@@ -37,8 +38,8 @@ export class PropertyController {
   // @HttpCode(202)
   createProperty(
     @Body() //   new ValidationPipe({
-    //     forbidNonWhitelisted: true,
-    propertyData //     whitelist: true,
+    //     whitelist: true,
+    propertyData //     forbidNonWhitelisted: true,
     //     groups: ['create'],
     //     always: true,
     //   }),
@@ -50,15 +51,16 @@ export class PropertyController {
   @Patch(':id')
   updateProperty(
     // @Param('id', ParseIntPipe) id: number,
-    @Param() param: IdParamDto,
+    // @Param() param: IdParamDto,
+    @Param('id', ParseIdPipe) id,
     @Body() //   new ValidationPipe({
-    //     forbidNonWhitelisted: true,
-    propertyData //     whitelist: true,
+    //     whitelist: true,
+    propertyData //     forbidNonWhitelisted: true,
     //     groups: ['update'],
     //     always: true,
     //   }),
     : CreatePropertyDto,
   ) {
-    return `Property with ID: ${param.id} updated with data: ${JSON.stringify(propertyData)}`;
+    return `Property with ID: ${id} updated with data: ${JSON.stringify(propertyData)}`;
   }
 }
