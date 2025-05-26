@@ -11,6 +11,7 @@ import {
   ParseBoolPipe,
   UsePipes,
   ValidationPipe,
+  Headers,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { IdParamDto } from './dto/idParam.dto';
@@ -20,6 +21,8 @@ import {
   CreatePropertySchema,
   CreatePropertyZodDto,
 } from './dto/createPropertyZod.dto';
+import { HeadersDto } from './dto/headers.dto';
+import { RequestHeaders } from './pipes/request-headers';
 
 @Controller('property')
 export class PropertyController {
@@ -61,13 +64,20 @@ export class PropertyController {
     // @Param() param: IdParamDto,
     @Param('id', ParseIdPipe) id,
     @Body() //   new ValidationPipe({
-    //     forbidNonWhitelisted: true,
-    propertyData //     whitelist: true,
+    propertyData //     forbidNonWhitelisted: true,
+    : CreatePropertyDto,
+    //     whitelist: true,
     //     groups: ['update'],
     //     always: true,
     //   }),
-    : CreatePropertyDto,
+    // @Headers() headers: HeadersDto,
+    // @RequestHeaders(
+    //   new ValidationPipe({ whitelist: true, validateCustomDecorators: true }),
+    // )
+    // headers: HeadersDto,
+    @RequestHeaders(HeadersDto) headers: HeadersDto,
   ) {
-    return `Property with ID: ${id} updated with data: ${JSON.stringify(propertyData)}`;
+    return headers;
+    // return `Property with ID: ${id} updated with data: ${JSON.stringify(propertyData)}`;
   }
 }
