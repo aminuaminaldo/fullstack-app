@@ -23,12 +23,14 @@ import {
 } from './dto/createPropertyZod.dto';
 import { HeadersDto } from './dto/headers.dto';
 import { RequestHeaders } from './pipes/request-headers';
+import { PropertyService } from './property.service';
 
 @Controller('property')
 export class PropertyController {
+  constructor(private readonly propertyService: PropertyService) {}
   @Get()
   getAllProperties() {
-    return 'All properties';
+    return this.propertyService.getAllProperties();
   }
 
   @Get(':id')
@@ -36,9 +38,7 @@ export class PropertyController {
     @Param('id', ParseIntPipe) id: number,
     @Query('sort', ParseBoolPipe) sort: boolean,
   ) {
-    console.log(typeof id);
-    console.log(typeof sort);
-    return `Property with ID: ${id}`;
+    return this.propertyService.getPropertyById(id, sort);
   }
 
   @Post()
@@ -55,7 +55,8 @@ export class PropertyController {
     //     always: true,
     //   }),
   ) {
-    return `Property created with data: ${JSON.stringify(propertyData)}`;
+    return this.propertyService.createProperty(propertyData);
+    // return `Property created with data: ${JSON.stringify(propertyData)}`;
   }
 
   @Patch(':id')
@@ -64,8 +65,8 @@ export class PropertyController {
     // @Param() param: IdParamDto,
     @Param('id', ParseIdPipe) id,
     @Body() //   new ValidationPipe({
-    propertyData //     forbidNonWhitelisted: true,
-    : CreatePropertyDto,
+    //     forbidNonWhitelisted: true,
+    propertyData: CreatePropertyDto,
     //     whitelist: true,
     //     groups: ['update'],
     //     always: true,
@@ -77,7 +78,8 @@ export class PropertyController {
     // headers: HeadersDto,
     @RequestHeaders(HeadersDto) headers: HeadersDto,
   ) {
-    return headers;
+    return this.propertyService.updateProperty(id, propertyData, headers);
+    // return headers;
     // return `Property with ID: ${id} updated with data: ${JSON.stringify(propertyData)}`;
   }
 }
