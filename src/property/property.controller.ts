@@ -26,13 +26,14 @@ import { HeadersDto } from './dto/headers.dto';
 import { RequestHeaders } from './pipes/request-headers';
 import { PropertyService } from './property.service';
 import { UpdatePropertyDto } from './dto/updateProperty.dto';
+import { PaginationDto } from './dto/pagination.dto';
 
 @Controller('property')
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
   @Get()
-  getAllProperties() {
-    return this.propertyService.getAllProperties();
+  getAllProperties(@Query() paginationDto: PaginationDto) {
+    return this.propertyService.getAllProperties(paginationDto);
   }
 
   @Get(':id')
@@ -67,8 +68,8 @@ export class PropertyController {
     // @Param() param: IdParamDto,
     @Param('id', ParseIdPipe) id,
     @Body() //   new ValidationPipe({
-    //     forbidNonWhitelisted: true,
-    propertyData: UpdatePropertyDto,
+    propertyData //     forbidNonWhitelisted: true,
+    : UpdatePropertyDto,
     //     whitelist: true,
     //     groups: ['update'],
     //     always: true,
