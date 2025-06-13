@@ -15,18 +15,25 @@ import * as bcrypt from 'bcrypt';
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
   @Column()
   firstName: string;
+
   @Column()
   lastName: string;
+
   @Column()
   email: string;
+
   @Column()
   avatarUrl: string;
+
   @CreateDateColumn()
   createdAt: Date;
-  @Column()
+
+  @Column({ nullable: true })
   password: string;
+
   @OneToMany(() => Property, (property) => property.user, {
     cascade: true,
   })
@@ -37,9 +44,10 @@ export class User {
   likedProperties: Property[];
 
   @BeforeInsert()
-  hashPassword() {
-    // Implement password hashing logic here
-    // For example, using bcrypt:
-    // this.password = bcrypt.hashSync(this.password, 10);
+  async hashPassword() {
+    if (!this.password) {
+      this.password = 'defaultPassword123';
+    }
+    this.password = await bcrypt.hash(this.password, 10);
   }
 }
