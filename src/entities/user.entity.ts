@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -8,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Property } from './property.entity';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
@@ -23,6 +25,8 @@ export class User {
   avatarUrl: string;
   @CreateDateColumn()
   createdAt: Date;
+  @Column()
+  password: string;
   @OneToMany(() => Property, (property) => property.user, {
     cascade: true,
   })
@@ -31,4 +35,11 @@ export class User {
   @ManyToMany(() => Property, (property) => property.likedBy)
   @JoinTable({ name: 'user_liked_properties' })
   likedProperties: Property[];
+
+  @BeforeInsert()
+  hashPassword() {
+    // Implement password hashing logic here
+    // For example, using bcrypt:
+    // this.password = bcrypt.hashSync(this.password, 10);
+  }
 }
