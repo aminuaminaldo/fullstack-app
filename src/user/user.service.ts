@@ -8,6 +8,11 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(User) private UserRepo: Repository<User>) {}
+
+  async updateHashedRefreshToken(userId: number, hashedRefreshToken: string) {
+    return await this.UserRepo.update({ id: userId }, { hashedRefreshToken });
+  }
+
   async create(createUserDto: CreateUserDto) {
     const user = await this.UserRepo.create(createUserDto);
     return await this.UserRepo.save(user);
@@ -26,7 +31,7 @@ export class UserService {
   findOne(id: number) {
     return this.UserRepo.findOne({
       where: { id },
-      select: ['firstName', 'lastName', 'avatarUrl'],
+      select: ['firstName', 'lastName', 'avatarUrl', 'hashedRefreshToken'],
     });
     // return `This action returns a #${id} user`;
   }
