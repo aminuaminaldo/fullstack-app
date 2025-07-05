@@ -9,8 +9,18 @@ import { Repository } from 'typeorm';
 export class UserService {
   constructor(@InjectRepository(User) private UserRepo: Repository<User>) {}
 
-  async updateHashedRefreshToken(userId: number, hashedRefreshToken: string) {
-    return await this.UserRepo.update({ id: userId }, { hashedRefreshToken });
+  // async updateHashedRefreshToken(userId: number, hashedRefreshToken: string) {
+  //   return await this.UserRepo.update({ id: userId }, { hashedRefreshToken });
+  // }
+
+  async updateHashedRefreshToken(
+    userId: number,
+    hashedRefreshToken: string | null,
+  ) {
+    const user = await this.UserRepo.findOneBy({ id: userId });
+    if (!user) return;
+    user.hashedRefreshToken = hashedRefreshToken;
+    return this.UserRepo.save(user);
   }
 
   async create(createUserDto: CreateUserDto) {

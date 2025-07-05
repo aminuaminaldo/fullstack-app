@@ -34,8 +34,8 @@ export class User {
   @Column({ nullable: true })
   password: string;
 
-  @Column({ nullable: true })
-  hashedRefreshToken: string;
+  @Column('text', { nullable: true })
+  hashedRefreshToken: string | null;
 
   @OneToMany(() => Property, (property) => property.user, {
     cascade: true,
