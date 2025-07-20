@@ -49,7 +49,7 @@ export class AuthController {
   @Public()
   @UseGuards(GoogleAuthGuard)
   @Get('google/callback')
-  async gooleCallback(@Req() req, @Res() res) {
+  async googleCallback(@Req() req, @Res() res) {
     const response = await this.authService.login(req.user.id);
     res.redirect(`http://localhost:5173?accessToken=${response.accessToken}`);
   }
